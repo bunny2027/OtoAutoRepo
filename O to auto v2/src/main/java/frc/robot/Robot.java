@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -34,13 +39,25 @@ private XboxController manipulatorController = new XboxController(1);
 // We use a XboxContoller instead of a joystick
   @Override
   public void robotInit() {
+
+
+
+
+
+
+
+
+
+
+
+
     leftMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
     rightMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
     leftSlave.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
     rightMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
     // Our encoders are different then theirs
-
-
+double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
+//formula for ticks to feet 
     m_robotContainer = new RobotContainer();
   }
 
