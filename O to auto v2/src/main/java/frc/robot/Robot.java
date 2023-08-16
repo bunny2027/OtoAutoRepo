@@ -37,18 +37,9 @@ public class Robot extends TimedRobot {
 private XboxController driverController = new XboxController(0);
 private XboxController manipulatorController = new XboxController(1);
 // We use a XboxContoller instead of a joystick
+
   @Override
   public void robotInit() {
-
-
-
-
-
-
-
-
-
-
 
 
     leftMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
@@ -58,7 +49,7 @@ private XboxController manipulatorController = new XboxController(1);
     // Our encoders are different then theirs
 double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
 //formula for ticks to feet 
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new robotContainer(1);
   }
 
   /**
@@ -112,7 +103,16 @@ double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double speed = -driverController.getRawAxis(1)*0.6;
+    double turn = driverController.getRawAxis(4)*0.3;//we use driver controller 
+
+    leftMaster.set(left);
+    leftSlave.set(left);
+    rightMaster.set(right);
+    rightSlave.set(right);
+    //you have to set up what those are and also we r using slave and master in this code 
+  }
 
   @Override
   public void testInit() {
