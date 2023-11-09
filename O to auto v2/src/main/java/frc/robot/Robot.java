@@ -38,6 +38,8 @@ private XboxController driverController = new XboxController(0);
 private XboxController manipulatorController = new XboxController(1);
 // We use a XboxContoller instead of a joystick
 
+
+
   @Override
   public void robotInit() {
 
@@ -107,10 +109,13 @@ double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
     double speed = -driverController.getRawAxis(1)*0.6;
     double turn = driverController.getRawAxis(4)*0.3;//we use driver controller 
 
-    leftMaster.set(left);
-    leftSlave.set(left);
-    rightMaster.set(right);
-    rightSlave.set(right);
+    double left = speed + turn;
+    double right = speed - turn;
+
+    leftMaster.setPercentOutput(left);
+    leftSlave.setPercentOutput(left);
+    rightMaster.setPercentOutput(-right);
+    rightSlave.setPercentOutput(-right);
     //you have to set up what those are and also we r using slave and master in this code 
   }
 
