@@ -28,14 +28,18 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  private WPI_TalonFX leftMaster = new WPI_TalonFX(1);
-  private WPI_TalonFX rightMaster = new WPI_TalonFX(2);
-  private WPI_TalonFX leftSlave = new WPI_TalonFX(3);
-  private WPI_TalonFX rightSlave = new WPI_TalonFX(4);
+  private WPI_TalonFX backLeft = new WPI_TalonFX(1);
+  private WPI_TalonFX backRight = new WPI_TalonFX(2);
+  private WPI_TalonFX frontLeft = new WPI_TalonFX(3);
+  private WPI_TalonFX frontRight = new WPI_TalonFX(4);
+  private WPI_TalonFX intakeMotor = new WPI_TalonFX(10);
 // Our motors are diffrent than the ones shown in the video
 //joystick
 private XboxController driverController = new XboxController(0);
 private XboxController manipulatorController = new XboxController(1);
+
+
+
 // We use a XboxContoller instead of a joystick
 
 
@@ -44,14 +48,15 @@ private XboxController manipulatorController = new XboxController(1);
   public void robotInit() {
 
 
-    leftMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-    rightMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-    leftSlave.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-    rightMaster.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    backLeft.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    backRight.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    frontLeft.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    frontRight.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    intakeMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
     // Our encoders are different then theirs
 double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
 //formula for ticks to feet 
-    m_robotContainer = new robotContainer(1);
+    m_robotContainer = new RobotContainer();
   }
 
   /**
@@ -101,21 +106,32 @@ double kDriveTick2Feet = 1.0/(2048*10.71*2*Math.PI)/12;
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    intakeMotor.set(0);
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double speed = -driverController.getRawAxis(1)*0.6;
-    double turn = driverController.getRawAxis(4)*0.3;//we use driver controller 
+    double speed = -driverController.getLeftY() *0.6;
+    double turn = driverController.getRightX()*0.3;//we use driver controller 
 
     double left = speed + turn;
     double right = speed - turn;
 
-    leftMaster.setPercentOutput(left);
-    leftSlave.setPercentOutput(left);
-    rightMaster.setPercentOutput(-right);
-    rightSlave.setPercentOutput(-right);
+    backLeft.set(left);
+    frontLeft.set(left);
+    backRight.set(-right);
+    frontRight.set(-right);
+
+    if (manipulatorController.getAButton()) {
+      intakeMotor.set (0.75);
+    } else if(manipulatorController.getYButton()) {
+      intakeMotor.set (-.75);
+    } else { 
+      intakeMotor.set (0);
+    }
+
     //you have to set up what those are and also we r using slave and master in this code 
   }
 

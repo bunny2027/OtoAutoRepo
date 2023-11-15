@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
-  private final DriveSubsystem driveSubsystem;
-  private final double distance;
+  private DriveSubsystem driveSubsystem;
+  private double distance;
   /** Creates a new DriveCommand. */
  
 
